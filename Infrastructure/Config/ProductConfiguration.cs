@@ -11,6 +11,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         builder.Property(x => x.Price).HasColumnType("Decimal(18,2)");
         builder.Property(x => x.Name).IsRequired();
-        builder.Property(x => x.Description).HasMaxLength(100);
+      
     }
 }
