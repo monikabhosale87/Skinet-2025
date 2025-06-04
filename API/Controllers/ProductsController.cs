@@ -1,3 +1,4 @@
+using API.RequestPagination;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -8,27 +9,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController (IGenericRepository<Product> repo):
-     ControllerBase
+    public class ProductsController (IGenericRepository<Product> repo):BaseAPIController
+     
     {
-        // public ProductsController(StoreContext context)
-        // {
-        //     this._Context = context;
-        // }
-
-        //public StoreContext _Context { get; }
+       
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand,
-        string? type, string? sort)
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(
+            [FromQuery] ProductSpecParameters specParams)
         {
             //return await _Context.products.ToListAsync();
-            var spec = new ProductSpecification(brand, type,sort);
-            var products = await repo.ListAsync(spec);
+            var spec = new ProductSpecification(specParams);
+            // var products = await repo.ListAsync(spec);
+            // var count =await repo.CountAsync(spec);
+            // var pagination = new Pagination<Product>(specParams.PageIndex, specParams.PageSize,
+            //                 count, products);
             // return Ok(await repo.ListAllAsync());
-            return Ok(products); 
+            return await CreatePagedResult(repo, spec, specParams.PageIndex, specParams.PageSize);
         }
 
         [HttpGet("{id:int}")]

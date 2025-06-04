@@ -12,8 +12,8 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<T?> GetEntityWithSpec(ISpecification<T> spec);
     Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
 
-     Task<TResult?> GetEntityWithSpec<TResult>(ISpecification<T,TResult> spec);
-    Task<IReadOnlyList<TResult>> ListAsync<TResult>(ISpecification<T,TResult> spec);
+    Task<TResult?> GetEntityWithSpec<TResult>(ISpecification<T, TResult> spec);
+    Task<IReadOnlyList<TResult>> ListAsync<TResult>(ISpecification<T, TResult> spec);
     //end specification
 
     void Add(T entity);
@@ -22,4 +22,6 @@ public interface IGenericRepository<T> where T : BaseEntity
 
     Task<bool> SaveAllAsync();
     bool Exist(int Id);
+
+    Task<int> CountAsync(ISpecification<T> spec);   
 }
